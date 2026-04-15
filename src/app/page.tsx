@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Calculator } from '@/components/calculator/Calculator';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
 import { formatNIS } from '@/lib/format';
-import { computeBurden } from '@/engine/burden';
+import { computeBurden } from '@/engine';
 
 type Props = {
   searchParams: Promise<{ salary?: string; gender?: string; children?: string }>;

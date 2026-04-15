@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { computeBurden } from '@/engine';
 import { SALARY_DEFAULT } from '@/lib/constants';
-import type { Gender } from '@/engine/types';
+import type { Gender } from '@/engine';
 
 export function useCalculator() {
   const [salary, setSalary] = useState(SALARY_DEFAULT);

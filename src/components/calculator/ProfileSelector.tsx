@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import type { Gender } from '@/engine/types';
+import type { Gender } from '@/engine';
 
 interface ProfileSelectorProps {
   value: Gender;

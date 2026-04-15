@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
-import { computeBurden } from '@/engine/burden';
+import { computeBurden } from '@/engine';
 import { formatNIS } from '@/lib/format';
-import type { Gender } from '@/engine/types';
+import type { Gender } from '@/engine';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
@@ -10,10 +10,12 @@ export const runtime = 'nodejs';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const salary = parseInt(searchParams.get('salary') || '15000', 10);
-  const gender = (searchParams.get('gender') || 'male') as Gender;
-  const children = parseInt(searchParams.get('children') || '0', 10);
+  const genderParam = searchParams.get('gender');
+  const gender: Gender = genderParam === 'female' ? 'female' : 'male';
+  const childrenRaw = parseInt(searchParams.get('children') || '0', 10);
+  const children = isNaN(childrenRaw) ? 0 : Math.max(0, Math.min(15, childrenRaw));
 
-  const clampedSalary = Math.max(5000, Math.min(80000, salary));
+  const clampedSalary = Math.max(5000, Math.min(80000, isNaN(salary) ? 15000 : salary));
   const burden = computeBurden(clampedSalary, gender, children);
 
   const fontPath = join(process.cwd(), 'assets', 'Heebo-Bold.ttf');

@@ -42,7 +42,7 @@ export function SalaryInput({ value, onChange }: SalaryInputProps) {
   return (
     <div className="flex items-center gap-2">
       <Slider
-        aria-label="משכורת ברוטו חודשית"
+        aria-label="שכר ברוטו חודשי"
         value={[value]}
         onValueChange={(v) => onChange(Array.isArray(v) ? v[0] : v)}
         min={SALARY_MIN}
