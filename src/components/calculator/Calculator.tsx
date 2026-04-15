@@ -94,7 +94,7 @@ export function Calculator() {
         {/* ── Logo + Title ── */}
         <div className="px-3 py-5 sm:py-7 text-center">
           <img src="/logo.png" alt="דתלוש" className="h-10 sm:h-12 mx-auto mb-4" />
-          <h1 className="text-2xl sm:text-3xl font-bold leading-tight">
+          <h1 className="text-lg sm:text-xl font-bold leading-tight">
             כמה מהתלוש שלי הולך לחרדים?
           </h1>
         </div>
