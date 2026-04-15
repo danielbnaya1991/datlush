@@ -167,7 +167,7 @@ export function Calculator() {
               <p
                 className={`text-xs mt-4 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-40 translate-y-0' : 'opacity-0 translate-y-3'}`}
               >
-                (ואתם עוד חושבים שזה לא משנה)
+                (חח אבל שטויות מי סופר?)
               </p>
             </div>
             {/* ── Below punchline (only renders after punchline is done) ── */}
