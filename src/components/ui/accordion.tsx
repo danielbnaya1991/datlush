@@ -32,16 +32,14 @@ function AccordionTrigger({
   const triggerRef = useCallback((node: HTMLButtonElement | null) => {
     if (!node) return
     node.addEventListener('click', () => {
-      // aria-expanded is already toggled by base-ui at this point
-      if (node.getAttribute('aria-expanded') === 'true') {
-        const item = node.closest('[data-slot="accordion-item"]')
-        if (item) {
-          // Wait for accordion expand animation to settle
-          setTimeout(() => {
-            item.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }, 350)
+      const item = node.closest('[data-slot="accordion-item"]')
+      if (!item) return
+      // Check after animation — if it's open, scroll to it
+      setTimeout(() => {
+        if (node.getAttribute('aria-expanded') === 'true') {
+          item.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
-      }
+      }, 400)
     })
   }, [])
 
