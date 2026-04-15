@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   if (salary && salary >= 5000 && salary <= 80000) {
     const burden = computeBurden(salary, gender, children);
     const title = `${formatNIS(burden.combinedMonthly)} בחודש הולכים לחרדים`;
-    const description = `מתוך משכורת של ${formatNIS(salary)}, ${formatNIS(burden.combinedMonthly)} בחודש הולכים לחרדים`;
+    const description = `מתוך תלוש של ${formatNIS(salary)}, ${formatNIS(burden.combinedMonthly)} בחודש הולכים לחרדים`;
 
     return {
       title,

@@ -91,10 +91,11 @@ export function Calculator() {
     <div className="mx-auto max-w-xl w-full px-2 py-4 sm:py-6">
       <div className="border border-slip-border bg-white">
 
-        {/* ── Title ── */}
+        {/* ── Logo + Title ── */}
         <div className="px-3 py-5 sm:py-7 text-center">
+          <img src="/logo.png" alt="דתלוש" className="h-10 sm:h-12 mx-auto mb-4" />
           <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
-            כמה מהמשכורת שלי<br />הולכת לחרדים?
+            כמה מהתלוש שלי<br />הולך לחרדים?
           </h1>
         </div>
 
@@ -156,7 +157,7 @@ export function Calculator() {
               <p
                 className={`text-3xl sm:text-4xl font-bold leading-snug mt-3 transition-all duration-500 ease-out ${fade(2)}`}
               >
-                מהמשכורת שלך<br />הולכים לחרדים מדי חודש
+                מהתלוש שלך<br />הולכים לחרדים מדי חודש
               </p>
               <p
                 className={`text-sm sm:text-base mt-3 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-3'}`}

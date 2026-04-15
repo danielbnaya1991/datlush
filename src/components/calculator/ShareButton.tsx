@@ -47,7 +47,7 @@ export function ShareButton({ salary, gender, children, combinedMonthly }: Share
   const params = new URLSearchParams({ salary: String(salary), gender });
   if (children > 0) params.set('children', String(children));
   const shareUrl = `${SITE_URL}?${params}`;
-  const shareText = `מתוך משכורת של ${formatNIS(salary)}, ${formatNIS(combinedMonthly)} בחודש הולכים לחרדים`;
+  const shareText = `מתוך תלוש של ${formatNIS(salary)}, ${formatNIS(combinedMonthly)} בחודש הולכים לחרדים`;
 
   const handleWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');

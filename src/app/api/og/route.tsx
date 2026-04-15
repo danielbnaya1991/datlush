@@ -43,7 +43,7 @@ export async function GET(request: Request) {
           }}
         >
           <p style={{ fontSize: '28px', color: '#64748b', margin: 0 }}>
-            מתוך משכורת של {formatNIS(clampedSalary)}
+            מתוך תלוש של {formatNIS(clampedSalary)}
           </p>
           <p
             style={{
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
             color: '#94a3b8',
           }}
         >
-          כמה מהמשכורת שלי הולכת לחרדים?
+          דתלוש — כמה מהתלוש שלי הולך לחרדים?
         </p>
       </div>
     ),
