@@ -33,9 +33,12 @@ function AccordionTrigger({
     const trigger = e.currentTarget
     // Only scroll when opening (not yet expanded)
     if (trigger.getAttribute('aria-expanded') !== 'true') {
-      setTimeout(() => {
-        trigger.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 150)
+      const item = trigger.closest('[data-slot="accordion-item"]')
+      if (item) {
+        setTimeout(() => {
+          item.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 150)
+      }
     }
   }, [])
 
