@@ -5,9 +5,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: Arial, "Arial Hebrew", "Noto Sans Hebrew", sans-serif;
-  --font-heading: Arial, "Arial Hebrew", "Noto Sans Hebrew", sans-serif;
-  --font-mono: Arial, "Arial Hebrew", "Noto Sans Hebrew", sans-serif;
+  --font-sans: "Courier New", Courier, "Miriam Mono CLM", monospace;
+  --font-heading: "Courier New", Courier, "Miriam Mono CLM", monospace;
+  --font-mono: "Courier New", Courier, "Miriam Mono CLM", monospace;
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);

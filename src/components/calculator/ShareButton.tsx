@@ -1,8 +1,6 @@
 'use client';
 
-import { formatNIS } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
-import type { Gender } from '@/engine/types';
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -36,18 +34,9 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-interface ShareButtonProps {
-  salary: number;
-  gender: Gender;
-  children: number;
-  combinedMonthly: number;
-}
-
-export function ShareButton({ salary, gender, children, combinedMonthly }: ShareButtonProps) {
-  const params = new URLSearchParams({ salary: String(salary), gender });
-  if (children > 0) params.set('children', String(children));
-  const shareUrl = `${SITE_URL}?${params}`;
-  const shareText = `מתוך תלוש של ${formatNIS(salary)}, ${formatNIS(combinedMonthly)} בחודש הולכים לחרדים`;
+export function ShareButton() {
+  const shareUrl = SITE_URL;
+  const shareText = 'שמעת על אתר "דתלוש?" עכשיו אפשר לגלות כמה מהתלוש שלך הולך לחרדים!';
 
   const handleWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');

@@ -191,7 +191,7 @@ export function Calculator() {
                 </div>
 
                 <div className="animate-fade-in" style={{ animationDelay: '240ms', animationFillMode: 'both' }}>
-                  <ShareButton salary={salary} gender={gender} children={children} combinedMonthly={burden.combinedMonthly} />
+                  <ShareButton />
                 </div>
 
                 <div className="px-3 py-2 text-center animate-fade-in" style={{ animationDelay: '320ms', animationFillMode: 'both' }}>
