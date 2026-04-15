@@ -58,34 +58,6 @@ export const AVERAGE_SALARY_MONTHLY = 13_514;
 // https://fs.knesset.gov.il/globaldocs/MMM/6745f598-afce-ef11-a856-005056aa1f91/2_6745f598-afce-ef11-a856-005056aa1f91_11_20780.pdf
 export const TOTAL_TAX_REVENUE_ANNUAL = 455_400_000_000;
 
-// Haredi share of working-age population: ~14%
-// Source: IDI (Israel Democracy Institute), Haredi Society Report 2024–2025
-// https://en.idi.org.il/haredi/2025/?chapter=63076
-// IDI 2025: 14.3% of total population (1,452,350 people)
-export const HAREDI_POPULATION_SHARE = {
-  low: 0.12,
-  central: 0.14,
-  high: 0.16,
-  source: 'IDI Haredi Society Report 2024–2025',
-};
-
-// Haredi share of total tax revenue: ~4%
-// Source: IDI — "Despite constituting 14% of the Jewish working-age population,
-//         they accounted for only 4% of tax revenues"
-// https://en.idi.org.il/articles/59401
-export const HAREDI_TAX_SHARE = {
-  low: 0.03,
-  central: 0.04,
-  high: 0.05,
-  source: 'IDI 2024',
-};
-
-// Non-Haredi household pays state: ~6,114 NIS/month
-// Source: "On Taxes and Wonders" (Kohelet Forum / Israel Economic Review)
-// Baseline data 2016–2018, commonly cited as 6,114
-// https://www.jpost.com/israel-news/politics-and-diplomacy/article-886994
-export const NON_HAREDI_HOUSEHOLD_PAYMENT_MONTHLY = 6_114;
-
 // Haredi household net receipt: ~4,137 NIS/month (transfers received - taxes paid)
 // Source: "On Taxes and Wonders" (Kohelet Forum / Israel Economic Review)
 // https://www.jpost.com/israel-news/politics-and-diplomacy/article-886994
@@ -112,16 +84,6 @@ export const INTEGRATION_GAIN_ANNUAL = {
   high: 12_000_000_000,
   source: 'IDI 2025 (±25% uncertainty)',
 };
-
-// Haredi male employment rate: 54% (first 3 quarters of 2024, down from 55.5% in 2023)
-// Source: CBS labor force survey 2024
-// https://www.calcalist.co.il/local_news/article/hk8qvnefke
-export const HAREDI_MALE_EMPLOYMENT_RATE = 0.54;
-
-// Non-Haredi male employment rate: 87%
-// Source: CBS labor force survey 2024; Taub Center
-// https://www.taubcenter.org.il/en/research/labor-market-in-the-shadow-of-war/
-export const NON_HAREDI_MALE_EMPLOYMENT_RATE = 0.87;
 
 // Estimated number of Haredi households: ~260,000
 // Derived: IDI 2025 population 1,452,350 / CBS avg Haredi household size ~5.6

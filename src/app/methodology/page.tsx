@@ -4,7 +4,7 @@ import { FormulaExplainer } from '@/components/methodology/FormulaExplainer';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'מקורות ושיטת חישוב — כמה מהמשכורת שלי הולכת לחרדים',
+  title: 'מקורות ושיטת חישוב — כמה מהתלוש שלי הולך לחרדים',
   description: 'הסבר מפורט על איך המספרים חושבו, מאיפה הנתונים, ומה הטווח',
 };
 

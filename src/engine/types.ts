@@ -1,10 +1,5 @@
 export type Gender = 'male' | 'female';
 
-export interface UserProfile {
-  grossMonthlySalary: number;
-  gender: Gender;
-}
-
 export interface TaxBreakdown {
   grossAnnual: number;
   incomeTax: number; // annual
@@ -23,11 +18,5 @@ export interface BurdenResult {
   percentOfSalary: number;
   userAnnualTax: number;
   userTaxShare: number; // fraction of total revenue
-}
-
-export interface UncertaintyRange {
-  low: number;
-  central: number;
-  high: number;
 }
 

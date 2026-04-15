@@ -29,47 +29,57 @@ export async function GET(request: Request) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f8fafc',
-          fontFamily: 'Arial',
+          backgroundColor: '#1a1a1a',
+          fontFamily: 'Heebo',
           direction: 'rtl',
+          position: 'relative',
         }}
       >
+        {/* Red accent line */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '6px', backgroundColor: '#dc2626', display: 'flex' }} />
+
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '16px',
+            gap: '12px',
           }}
         >
-          <p style={{ fontSize: '28px', color: '#64748b', margin: 0 }}>
+          <p style={{ fontSize: '28px', color: '#999999', margin: 0 }}>
             מתוך תלוש של {formatNIS(clampedSalary)}
           </p>
           <p
             style={{
-              fontSize: '96px',
+              fontSize: '108px',
               fontWeight: 700,
-              color: '#0f172a',
+              color: '#ffffff',
               margin: 0,
               lineHeight: 1,
             }}
           >
             {formatNIS(burden.combinedMonthly)}
           </p>
-          <p style={{ fontSize: '32px', color: '#475569', margin: 0 }}>
-            בחודש הולכים לחרדים
+          <p style={{ fontSize: '36px', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+            מהתלוש שלך הולכים לחרדים
+          </p>
+          <p style={{ fontSize: '20px', color: '#666666', margin: 0, marginTop: '8px' }}>
+            שזה {formatNIS(burden.combinedMonthly * 12)} בשנה
           </p>
         </div>
-        <p
+        <div
           style={{
             position: 'absolute',
             bottom: '24px',
-            fontSize: '18px',
-            color: '#94a3b8',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
           }}
         >
-          דתלוש — כמה מהתלוש שלי הולך לחרדים?
-        </p>
+          <p style={{ fontSize: '18px', color: '#555555' }}>
+            דתלוש — כמה מהתלוש שלי הולך לחרדים?
+          </p>
+        </div>
       </div>
     ),
     {
@@ -77,7 +87,7 @@ export async function GET(request: Request) {
       height: 630,
       fonts: [
         {
-          name: 'Arial',
+          name: 'Heebo',
           data: fontData,
           style: 'normal',
           weight: 700,

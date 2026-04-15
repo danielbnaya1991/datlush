@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { computeBurden } from '@/engine/burden';
+import { computeBurden } from '@/engine';
 import { SALARY_DEFAULT } from '@/lib/constants';
 import type { Gender } from '@/engine/types';
 

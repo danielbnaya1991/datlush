@@ -6,6 +6,7 @@ export function FormulaExplainer() {
         <p>
           קודם כל מחשבים את כל המסים שלך בשנה: מס הכנסה (לפי מדרגות),
           ביטוח לאומי ומס בריאות. מזה מורידים הנחות שמגיעות לך (נקודות זיכוי).
+          נקודות הזיכוי לילדים מחושבות בצורה מפושטת — בפועל הן תלויות בגיל הילדים.
         </p>
         <div className="bg-slip-hover/50 border border-slip-border p-2.5 font-mono text-xs leading-relaxed overflow-x-auto" dir="ltr">
           netTax = max(0, incomeTax − creditPoints) + NII + healthTax
@@ -38,7 +39,7 @@ export function FormulaExplainer() {
       <section className="space-y-1.5">
         <h3 className="font-bold">שלב 4: מסים שלא נגבים</h3>
         <p>
-          רוב הגברים החרדים לא עובדים (54% לעומת 87% אצל השאר).
+          כמעט מחצית מהגברים החרדים לא עובדים (רק 54% עובדים, לעומת 87% בשאר האוכלוסייה).
           לפי מכון הדמוקרטיה, אם כולם היו עובדים המדינה הייתה מרוויחה
           עוד ₪9.5 מיליארד בשנה. הכסף הזה חסר — וכופלים בחלק שלך.
         </p>
