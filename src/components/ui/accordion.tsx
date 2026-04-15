@@ -29,28 +29,31 @@ function AccordionTrigger({
   children,
   ...props
 }: AccordionPrimitive.Trigger.Props) {
-  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    const trigger = e.currentTarget
-    // Only scroll when opening (not yet expanded)
-    if (trigger.getAttribute('aria-expanded') !== 'true') {
-      const item = trigger.closest('[data-slot="accordion-item"]')
-      if (item) {
-        setTimeout(() => {
-          item.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 150)
+  const triggerRef = useCallback((node: HTMLButtonElement | null) => {
+    if (!node) return
+    node.addEventListener('click', () => {
+      // aria-expanded is already toggled by base-ui at this point
+      if (node.getAttribute('aria-expanded') === 'true') {
+        const item = node.closest('[data-slot="accordion-item"]')
+        if (item) {
+          // Wait for accordion expand animation to settle
+          setTimeout(() => {
+            item.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 350)
+        }
       }
-    }
+    })
   }, [])
 
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
+        ref={triggerRef}
         className={cn(
           "group/accordion-trigger relative flex flex-1 items-center justify-between rounded-lg border border-transparent py-3 text-start text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className
         )}
-        onClick={handleClick}
         {...props}
       >
         {children}
