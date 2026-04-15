@@ -94,8 +94,8 @@ export function Calculator() {
         {/* ── Logo + Title ── */}
         <div className="px-3 py-5 sm:py-7 text-center">
           <img src="/logo.png" alt="דתלוש" className="h-10 sm:h-12 mx-auto mb-4" />
-          <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
-            כמה מהתלוש שלי<br />הולך לחרדים?
+          <h1 className="text-2xl sm:text-3xl font-bold leading-tight">
+            כמה מהתלוש שלי הולך לחרדים?
           </h1>
         </div>
 
@@ -157,12 +157,17 @@ export function Calculator() {
               <p
                 className={`text-3xl sm:text-4xl font-bold leading-snug mt-3 transition-all duration-500 ease-out ${fade(2)}`}
               >
-                מהתלוש שלך<br />הולכים לחרדים מדי חודש
+                מהתלוש שלך<br />הולכים לחרדים<br />מדי חודש
               </p>
               <p
                 className={`text-sm sm:text-base mt-3 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-3'}`}
               >
-                שזה {formatNIS(annual)} בשנה ו-{formatNIS(career)} לאורך {CAREER_YEARS} שנות קריירה
+                שזה {formatNIS(annual)} בשנה<br />ו-{formatNIS(career)} לאורך {CAREER_YEARS} שנות קריירה
+              </p>
+              <p
+                className={`text-xs mt-4 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-40 translate-y-0' : 'opacity-0 translate-y-3'}`}
+              >
+                (חח אבל שטויות מי סופר?)
               </p>
             </div>
             {/* ── Below punchline (only renders after punchline is done) ── */}
