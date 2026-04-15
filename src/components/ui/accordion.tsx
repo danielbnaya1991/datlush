@@ -1,4 +1,5 @@
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion"
+import { useCallback } from "react"
 
 import { cn } from "@/lib/utils"
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
@@ -28,6 +29,16 @@ function AccordionTrigger({
   children,
   ...props
 }: AccordionPrimitive.Trigger.Props) {
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const trigger = e.currentTarget
+    // Only scroll when opening (not yet expanded)
+    if (trigger.getAttribute('aria-expanded') !== 'true') {
+      setTimeout(() => {
+        trigger.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 150)
+    }
+  }, [])
+
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -36,6 +47,7 @@ function AccordionTrigger({
           "group/accordion-trigger relative flex flex-1 items-center justify-between rounded-lg border border-transparent py-3 text-start text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className
         )}
+        onClick={handleClick}
         {...props}
       >
         {children}
