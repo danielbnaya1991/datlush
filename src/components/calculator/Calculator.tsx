@@ -199,9 +199,14 @@ export function Calculator() {
                   <ShareButton />
                 </div>
 
-                <div className="px-3 py-2 text-center animate-fade-in" style={{ animationDelay: '320ms', animationFillMode: 'both' }}>
-                  <p className="text-[10px] text-muted-foreground">
-                    המחשה בלבד · אינו מהווה ייעוץ מיסויי · {new Date().toLocaleDateString('he-IL')}
+                <div className="px-3 py-3 text-center animate-fade-in" style={{ animationDelay: '320ms', animationFillMode: 'both' }}>
+                  <p className="text-[9px] leading-relaxed text-muted-foreground">
+                    הנתונים מבוססים על פרסומים של משרד האוצר, הלמ״ס, מכון הדמוקרטיה הישראלי ופורום קהלת.
+                    החישוב הוא הערכה כללית בלבד, אינו מדויק ועשוי לסטות מהמציאות.
+                    האתר אינו מהווה ייעוץ מיסויי, כלכלי או משפטי מכל סוג שהוא.
+                    השימוש באתר הוא על אחריות המשתמש/ת בלבד.
+                    <br />
+                    {new Date().toLocaleDateString('he-IL')}
                   </p>
                 </div>
               </>
