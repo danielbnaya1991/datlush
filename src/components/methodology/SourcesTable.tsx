@@ -1,9 +1,9 @@
 const SOURCES = [
   {
-    parameter: 'מדרגות מס הכנסה 2025',
+    parameter: 'מדרגות מס הכנסה 2026',
     value: '10%–47%',
-    source: 'רשות המיסים',
-    url: 'https://www.gov.il/he/departments/general/income-tax-rates',
+    source: 'רשות המיסים (עדכון תקציב 2026)',
+    url: 'https://en.globes.co.il/en/article-revised-income-tax-brackets-boost-march-salary-1001539434',
   },
   {
     parameter: 'ערך נקודת זיכוי',
@@ -12,10 +12,34 @@ const SOURCES = [
     url: 'https://www.gov.il/he/departments/general/income-tax-rates',
   },
   {
+    parameter: 'נקודות זיכוי לילדים (לפי גיל)',
+    value: '0-5: 2.0/2.5 · 6-17: 1.0 · 18+: 0',
+    source: 'רשות המיסים (§40 פקודת מס הכנסה)',
+    url: 'https://www.gov.il/he/pages/income-tax-credit-points',
+  },
+  {
+    parameter: 'נקודות זיכוי להורה יחיד',
+    value: '+1 להורה, +1 לכל ילד/ה מתחת ל-18',
+    source: 'רשות המיסים (§40(ב)(2))',
+    url: 'https://www.gov.il/he/pages/income-tax-credit-points',
+  },
+  {
     parameter: 'ביטוח לאומי + מס בריאות',
     value: '1.04%–7% / 3.23%–5.17%',
     source: 'ביטוח לאומי (תיקון 252)',
     url: 'https://www.btl.gov.il/Insurance/Rates/Pages/לעובדים%20שכירים.aspx',
+  },
+  {
+    parameter: 'הפרשת עובד/ת לפנסיה חובה',
+    value: '6% מהשכר (ברירת מחדל)',
+    source: 'צו הרחבה לפנסיה חובה 2017',
+    url: 'https://www.gov.il/he/pages/pension_rights',
+  },
+  {
+    parameter: 'הפרשת עובד/ת לקרן השתלמות',
+    value: '2.5% עד תקרה של ₪15,712',
+    source: 'פקודת מס הכנסה §3(ה)',
+    url: 'https://www.kolzchut.org.il/he/קרן_השתלמות',
   },
   {
     parameter: 'שכר ממוצע במשק',
@@ -25,9 +49,9 @@ const SOURCES = [
   },
   {
     parameter: 'סך הכנסות המדינה ממסים',
-    value: '~₪455 מיליארד לשנה',
-    source: 'משרד האוצר 2024',
-    url: 'https://fs.knesset.gov.il/globaldocs/MMM/6745f598-afce-ef11-a856-005056aa1f91/2_6745f598-afce-ef11-a856-005056aa1f91_11_20780.pdf',
+    value: '~₪509 מיליארד לשנה',
+    source: 'רשות המיסים 2025',
+    url: 'https://en.globes.co.il/en/article-tax-collection-in-israel-up-12-in-2025-1001531232',
   },
   {
     parameter: 'אחוז החרדים מהאוכלוסייה',
@@ -43,39 +67,39 @@ const SOURCES = [
   },
   {
     parameter: 'כמה משפחה חרדית מקבלת מהמדינה (נטו)',
-    value: '~₪4,137 לחודש',
-    source: 'פורום קהלת',
+    value: '~₪5,983 לחודש',
+    source: 'פורום קהלת, עדכון 2026',
     url: 'https://www.jpost.com/israel-news/politics-and-diplomacy/article-886994',
+  },
+  {
+    parameter: 'עלות אי-גיוס חרדים (מילואים)',
+    value: '~₪9 מיליארד לשנה',
+    source: 'בנק ישראל, דצמ׳ 2025',
+    url: 'https://www.boi.org.il/en/communication-and-publications/press-releases/10-12-25-en/',
   },
   {
     parameter: 'כמה משפחה לא-חרדית משלמת למדינה (נטו)',
-    value: '~₪6,114 לחודש',
-    source: 'פורום קהלת',
+    value: '~₪8,842 לחודש',
+    source: 'פורום קהלת, עדכון 2026',
     url: 'https://www.jpost.com/israel-news/politics-and-diplomacy/article-886994',
-  },
-  {
-    parameter: 'כמה כסף המדינה הייתה מרוויחה אם חרדים היו עובדים',
-    value: '₪9.5 מיליארד לשנה',
-    source: 'מכון הדמוקרטיה 2024',
-    url: 'https://en.idi.org.il/articles/59401',
-  },
-  {
-    parameter: 'עלות אי-העבודה של חרדים לכל עובד/ת',
-    value: '₪3,540 לשנה',
-    source: 'מכון הדמוקרטיה 2024',
-    url: 'https://en.idi.org.il/articles/59401',
   },
   {
     parameter: 'אחוז גברים חרדים שעובדים',
     value: '54%',
-    source: 'הלמ״ס 2024',
-    url: 'https://www.calcalist.co.il/local_news/article/hk8qvnefke',
+    source: 'מכון הדמוקרטיה הישראלי 2026',
+    url: 'https://en.idi.org.il/articles/63385',
   },
   {
-    parameter: 'אחוז גברים לא-חרדים שעובדים',
+    parameter: 'אחוז גברים יהודים לא-חרדים שעובדים',
     value: '87%',
-    source: 'הלמ״ס / מרכז טאוב 2024',
-    url: 'https://www.taubcenter.org.il/en/research/labor-market-in-the-shadow-of-war/',
+    source: 'מכון הדמוקרטיה הישראלי 2026',
+    url: 'https://en.idi.org.il/articles/63385',
+  },
+  {
+    parameter: 'אחוז נשים חרדיות שעובדות',
+    value: '~80%',
+    source: 'מכון הדמוקרטיה הישראלי 2026',
+    url: 'https://en.idi.org.il/articles/63385',
   },
   {
     parameter: 'מספר משפחות חרדיות',
@@ -88,20 +112,20 @@ const SOURCES = [
 export function SourcesTable() {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-xs">
+      <table className="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th className="slip-cell font-bold text-start !text-xs !py-1.5 !px-2">נתון</th>
-            <th className="slip-cell font-bold text-start !text-xs !py-1.5 !px-2">ערך</th>
-            <th className="slip-cell font-bold text-start !text-xs !py-1.5 !px-2">מקור</th>
+            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">נתון</th>
+            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">ערך</th>
+            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">מקור</th>
           </tr>
         </thead>
         <tbody>
           {SOURCES.map((s) => (
             <tr key={s.parameter}>
-              <td className="slip-cell !text-xs !py-1.5 !px-2">{s.parameter}</td>
-              <td className="slip-cell !text-xs !py-1.5 !px-2 tabular-nums whitespace-nowrap">{s.value}</td>
-              <td className="slip-cell !text-xs !py-1.5 !px-2">
+              <td className="slip-cell !text-sm !py-1.5 !px-2">{s.parameter}</td>
+              <td className="slip-cell !text-sm !py-1.5 !px-2 tabular-nums whitespace-nowrap">{s.value}</td>
+              <td className="slip-cell !text-sm !py-1.5 !px-2">
                 <a
                   href={s.url}
                   target="_blank"

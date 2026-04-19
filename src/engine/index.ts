@@ -3,4 +3,4 @@ import { runSanityChecks } from './sanity';
 runSanityChecks();
 
 export { computeBurden } from './burden';
-export type { Gender, BurdenResult } from './types';
+export type { Gender, BurdenResult, AdvancedOptions, ChildrenByAge } from './types';

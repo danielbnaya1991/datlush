@@ -1,5 +1,5 @@
 export const SITE_NAME = 'דתלוש — כמה מהתלוש שלי הולך לחרדים?';
-export const SITE_DESCRIPTION = 'גלה כמה מהמסים שלך הולכים לחרדים — מחשבון מבוסס נתוני משרד האוצר, הלמ״ס ומכון הדמוקרטיה';
+export const SITE_DESCRIPTION = 'גלה כמה מהמסים שלך הולכים לחרדים — מחשבון מבוסס נתוני בנק ישראל, רשות המיסים, הלמ״ס, מכון הדמוקרטיה ופורום קהלת';
 export const SITE_URL = 'https://datlush.netlify.app';
 
 export const SALARY_MIN = 5_000;

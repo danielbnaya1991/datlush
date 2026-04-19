@@ -34,9 +34,17 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-export function ShareButton() {
+import { formatNIS } from '@/lib/format';
+
+interface ShareButtonProps {
+  monthlyBurden?: number;
+}
+
+export function ShareButton({ monthlyBurden }: ShareButtonProps) {
   const shareUrl = SITE_URL;
-  const shareText = 'שמעת על אתר "דתלוש?" עכשיו אפשר לגלות כמה מהתלוש שלך הולך לחרדים!';
+  const shareText = monthlyBurden
+    ? `גיליתי ש-${formatNIS(monthlyBurden)} מהתלוש שלי הולכים לחרדים מדי חודש. גלה כמה אצלך:`
+    : 'שמעת על "דתלוש"? עכשיו אפשר לגלות כמה מהתלוש שלך הולך לחרדים!';
 
   const handleWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');

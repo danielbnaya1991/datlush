@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useCalculator } from '@/hooks/useCalculator';
 import { SalaryInput } from './SalaryInput';
 import { ProfileSelector } from './ProfileSelector';
 import { ChildrenInput } from './ChildrenInput';
+import { AdvancedSettings } from './AdvancedSettings';
 import { ShareButton } from './ShareButton';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { SourcesTable } from '@/components/methodology/SourcesTable';
@@ -23,6 +25,14 @@ export function Calculator() {
     children,
     setChildren,
     burden,
+    childrenByAge,
+    setChildrenByAge,
+    singleParent,
+    setSingleParent,
+    pensionEnabled,
+    setPensionEnabled,
+    kerenEnabled,
+    setKerenEnabled,
   } = useCalculator();
 
   // Staged reveal animation
@@ -46,12 +56,20 @@ export function Calculator() {
     }
 
     hasAnimated.current = true;
-    setStage(1);
 
     // Focus results for screen readers
     resultsRef.current?.focus();
 
     const target = burden.combinedMonthly;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      setDisplayValue(target);
+      setStage(4);
+      return;
+    }
+
+    setStage(1);
     const duration = 1000;
     const start = performance.now();
 
@@ -93,7 +111,14 @@ export function Calculator() {
 
         {/* ── Logo + Title ── */}
         <div className="px-3 py-5 sm:py-7 text-center">
-          <img src="/logo.png" alt="דתלוש" className="h-10 sm:h-12 mx-auto mb-4" />
+          <Image
+            src="/logo.png"
+            alt="דתלוש"
+            width={200}
+            height={48}
+            priority
+            className="h-10 sm:h-12 w-auto mx-auto mb-4"
+          />
           <h1 className="text-lg sm:text-xl font-bold leading-tight">
             כמה מהתלוש שלי הולך לחרדים?
           </h1>
@@ -103,7 +128,7 @@ export function Calculator() {
 
         {/* ── Salary ── */}
         <div className="p-2.5">
-          <span className="block mb-2 text-[11px] font-bold text-muted-foreground">שכר ברוטו חודשי</span>
+          <span className="block mb-2 text-sm font-bold text-muted-foreground">שכר ברוטו חודשי</span>
           <SalaryInput value={salary} onChange={setSalary} />
         </div>
 
@@ -112,32 +137,39 @@ export function Calculator() {
         {/* ── Gender + Children ── */}
         <div className="grid grid-cols-2">
           <div className="p-2.5">
-            <span className="block mb-2 text-[11px] font-bold text-muted-foreground">מגדר</span>
+            <span className="block mb-2 text-sm font-bold text-muted-foreground">מגדר</span>
             <ProfileSelector value={gender} onChange={setGender} />
           </div>
           <div className="p-2.5">
-            <span className="block mb-2 text-[11px] font-bold text-muted-foreground">ילדים</span>
+            <span className="block mb-2 text-sm font-bold text-muted-foreground">ילדים</span>
             <ChildrenInput value={children} onChange={setChildren} />
           </div>
         </div>
 
+        <div className="mx-3 border-t border-slip-border" />
+
+        {/* ── Deductions + credits ── */}
+        <AdvancedSettings
+          pensionEnabled={pensionEnabled}
+          setPensionEnabled={setPensionEnabled}
+          singleParent={singleParent}
+          setSingleParent={setSingleParent}
+          kerenEnabled={kerenEnabled}
+          setKerenEnabled={setKerenEnabled}
+          flatChildren={children}
+          childrenByAge={childrenByAge}
+          setChildrenByAge={setChildrenByAge}
+        />
+
         {/* ── Calculate button ── */}
         {!calculated && (
-          <>
-            <div className="mx-3 border-t border-slip-border" />
-            <button
-              type="button"
-              onClick={() => setCalculated(true)}
-              className="w-full bg-foreground text-white font-bold py-3 text-sm cursor-pointer hover:bg-foreground/90 transition-colors"
-            >
-              חישוב
-            </button>
-            <div className="px-3 py-2 text-center">
-              <p className="text-[10px] text-muted-foreground">
-                מבוסס על נתוני משרד האוצר, הלמ״ס ומכון הדמוקרטיה · המחשה בלבד
-              </p>
-            </div>
-          </>
+          <button
+            type="button"
+            onClick={() => setCalculated(true)}
+            className="w-full bg-foreground text-white font-bold py-3 text-base cursor-pointer hover:bg-foreground/90 transition-colors"
+          >
+            חישוב
+          </button>
         )}
 
         {/* ── Results ── */}
@@ -160,16 +192,42 @@ export function Calculator() {
                 מהתלוש שלך<br />הולכים לחרדים<br />מדי חודש
               </p>
               <p
-                className={`text-sm sm:text-base mt-3 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-3'}`}
+                className={`text-base sm:text-lg mt-3 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-3'}`}
               >
                 שזה {formatNIS(annual)} בשנה<br />ו-{formatNIS(career)} לאורך {CAREER_YEARS} שנות קריירה
               </p>
-              <p
-                className={`text-xs mt-4 transition-all duration-500 ease-out ${stage >= 3 ? 'opacity-40 translate-y-0' : 'opacity-0 translate-y-3'}`}
-              >
-                (חח אבל שטויות מי סופר?)
-              </p>
             </div>
+            {/* ── Tax breakdown mini-table ── */}
+            {stage >= 4 && (
+              <div className="animate-fade-in px-3 py-3">
+                <table className="w-full border-collapse text-sm" dir="rtl">
+                  <tbody>
+                    {[
+                      { label: 'שכר ברוטו (חודשי)', value: burden.tax.grossAnnual / 12 },
+                      ...(burden.tax.taxableAnnual !== burden.tax.grossAnnual
+                        ? [{ label: 'הכנסה חייבת במס', value: burden.tax.taxableAnnual / 12 }]
+                        : []),
+                      { label: 'מס הכנסה', value: Math.max(0, burden.tax.incomeTax - burden.tax.creditPoints) / 12 },
+                      { label: 'ביטוח לאומי', value: burden.tax.nii / 12 },
+                      { label: 'מס בריאות', value: burden.tax.healthTax / 12 },
+                      { label: 'סה״כ מסים', value: burden.tax.netTax / 12, bold: true },
+                      { label: 'חלקך מקופת המדינה', value: `${(burden.userTaxShare * 100).toFixed(6)}%`, raw: true },
+                      { label: 'נטל חרדי (חודשי)', value: burden.combinedMonthly, bold: true, highlight: true },
+                    ].map((row) => (
+                      <tr key={row.label}>
+                        <td className={`slip-cell !text-sm !py-1 !px-2 ${row.bold ? 'font-bold' : ''} ${row.highlight ? 'bg-red-600 text-white' : ''}`}>
+                          {row.label}
+                        </td>
+                        <td className={`slip-cell !text-sm !py-1 !px-2 tabular-nums whitespace-nowrap text-start ${row.bold ? 'font-bold' : ''} ${row.highlight ? 'bg-red-600 text-white' : ''}`} dir="ltr">
+                          {'raw' in row && row.raw ? row.value : formatNIS(row.value as number)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
             {/* ── Below punchline (only renders after punchline is done) ── */}
             {stage >= 4 && (
               <>
@@ -185,7 +243,7 @@ export function Calculator() {
                           className="animate-fade-in"
                           style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'both' }}
                         >
-                          <AccordionTrigger className="text-sm">{item.label}</AccordionTrigger>
+                          <AccordionTrigger className="text-base">{item.label}</AccordionTrigger>
                         </div>
                         <AccordionContent>
                           {item.content}
@@ -196,23 +254,22 @@ export function Calculator() {
                 </div>
 
                 <div className="animate-fade-in" style={{ animationDelay: '240ms', animationFillMode: 'both' }}>
-                  <ShareButton />
-                </div>
-
-                <div className="px-3 py-3 text-center animate-fade-in" style={{ animationDelay: '320ms', animationFillMode: 'both' }}>
-                  <p className="text-[9px] leading-relaxed text-muted-foreground">
-                    הנתונים מבוססים על פרסומים של משרד האוצר, הלמ״ס, מכון הדמוקרטיה הישראלי ופורום קהלת.
-                    החישוב הוא הערכה כללית בלבד, אינו מדויק ועשוי לסטות מהמציאות.
-                    האתר אינו מהווה ייעוץ מיסויי, כלכלי או משפטי מכל סוג שהוא.
-                    השימוש באתר הוא על אחריות המשתמש/ת בלבד.
-                    <br />
-                    {new Date().toLocaleDateString('he-IL')}
-                  </p>
+                  <ShareButton monthlyBurden={burden.combinedMonthly} />
                 </div>
               </>
             )}
           </div>
         )}
+
+        {/* ── Unified footer (shown in both states) ── */}
+        <div className="px-3 py-3 text-center">
+          <p className="text-[11px] leading-relaxed text-muted-foreground">
+            המחשבון מבוסס על נתונים ופרסומים רשמיים של משרד האוצר, הלמ״ס, מכון הדמוקרטיה הישראלי ופורום קהלת (נתוני 2025-2026),
+            ומציג הערכה אינדיקטיבית לצורכי מידע והמחשה בלבד.
+            אין לראות בתוצאות תחליף לייעוץ מיסויי, כלכלי או משפטי מקצועי,
+            והשימוש במידע המוצג הוא באחריות המשתמש/ת בלבד.
+          </p>
+        </div>
       </div>
     </div>
   );
