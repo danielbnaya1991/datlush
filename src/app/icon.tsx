@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
-export const runtime = 'nodejs';
+export const dynamic = 'force-static';
 export const size = { width: 512, height: 512 };
 export const contentType = 'image/png';
 

@@ -21,7 +21,7 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
             'flex-1 border border-slip-border px-3 py-1.5 text-sm font-bold transition-colors',
             g === 'female' && '-mr-px',
             value === g
-              ? 'bg-muted-foreground text-white'
+              ? 'bg-foreground text-white'
               : 'bg-white text-foreground hover:bg-slip-hover'
           )}
         >

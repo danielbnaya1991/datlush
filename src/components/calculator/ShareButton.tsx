@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { SITE_URL } from '@/lib/constants';
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -41,6 +42,7 @@ interface ShareButtonProps {
 }
 
 export function ShareButton({ monthlyBurden }: ShareButtonProps) {
+  const [open, setOpen] = useState(false);
   const shareUrl = SITE_URL;
   const shareText = monthlyBurden
     ? `גיליתי ש-${formatNIS(monthlyBurden)} מהתלוש שלי הולכים לחרדים מדי חודש. גלה כמה אצלך:`
@@ -64,22 +66,47 @@ export function ShareButton({ monthlyBurden }: ShareButtonProps) {
 
   const iconSize = 'size-[18px]';
 
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="flex-1 cursor-pointer font-mono font-bold transition-colors"
+        style={{
+          padding: '14px 10px',
+          background: 'var(--foreground)',
+          color: '#fff',
+          border: 'none',
+          fontSize: 13,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+        }}
+      >
+        שתף
+      </button>
+    );
+  }
+
   return (
-    <div className="px-3 py-3">
-      <div className="flex items-center justify-center gap-5">
-        <button onClick={handleWhatsApp} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="וואטסאפ" aria-label="שיתוף בוואטסאפ">
-          <WhatsAppIcon className={iconSize} />
-        </button>
-        <button onClick={handleTelegram} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="טלגרם" aria-label="שיתוף בטלגרם">
-          <TelegramIcon className={iconSize} />
-        </button>
-        <button onClick={handleTwitter} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="X" aria-label="שיתוף ב-X">
-          <XIcon className={iconSize} />
-        </button>
-        <button onClick={handleFacebook} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="פייסבוק" aria-label="שיתוף בפייסבוק">
-          <FacebookIcon className={iconSize} />
-        </button>
-      </div>
+    <div
+      className="flex-1 flex items-center justify-center gap-4"
+      style={{
+        padding: '10px',
+        border: '2px solid var(--foreground)',
+      }}
+    >
+      <button onClick={handleWhatsApp} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="וואטסאפ" aria-label="שיתוף בוואטסאפ">
+        <WhatsAppIcon className={iconSize} />
+      </button>
+      <button onClick={handleTelegram} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="טלגרם" aria-label="שיתוף בטלגרם">
+        <TelegramIcon className={iconSize} />
+      </button>
+      <button onClick={handleTwitter} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="X" aria-label="שיתוף ב-X">
+        <XIcon className={iconSize} />
+      </button>
+      <button onClick={handleFacebook} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="פייסבוק" aria-label="שיתוף בפייסבוק">
+        <FacebookIcon className={iconSize} />
+      </button>
     </div>
   );
 }

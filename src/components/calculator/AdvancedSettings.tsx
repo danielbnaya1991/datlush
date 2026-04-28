@@ -79,7 +79,7 @@ function Toggle({
       className={cn(
         'border border-slip-border px-3 py-1.5 text-sm font-bold transition-colors',
         on
-          ? 'bg-muted-foreground text-white'
+          ? 'bg-foreground text-white'
           : 'bg-white text-foreground hover:bg-slip-hover',
       )}
     >
@@ -122,7 +122,7 @@ export function AdvancedSettings({
   setChildrenByAge,
 }: AdvancedSettingsProps) {
   return (
-    <div className="px-3 divide-y divide-slip-border [&>*]:py-2.5">
+    <div className="divide-y divide-slip-border/20 [&>*]:py-2.5" style={{ marginTop: 12 }}>
       <ToggleRow
         label="הפרשת פנסיה (6%)"
         on={pensionEnabled}

@@ -25,17 +25,19 @@ export const TAX_BRACKETS = [
 export const SURCHARGE_ANNUAL_THRESHOLD = 721_560;
 export const SURCHARGE_RATE = 0.03;
 
-// ─── Tax Credit Points (2025) ────────────────────────────────────────────
+// ─── Tax Credit Points (2024–2026, frozen) ───────────────────────────────
 // Source: https://www.gov.il/he/departments/general/income-tax-rates
 // Frozen 2024–2026
 export const CREDIT_POINT_MONTHLY = 242; // NIS/month
 export const CREDIT_POINTS_MALE = 2.25;
 export const CREDIT_POINTS_FEMALE = 2.75;
 
-// Child credit points (ages 6-17 bracket, simplified)
+// Child credit points — legacy flat path (assumes ages 6-17 for simplicity)
 // Source: https://www.gov.il/he/departments/general/income-tax-rates
-export const CHILD_CREDIT_POINTS_MALE = 1;   // per child
-export const CHILD_CREDIT_POINTS_FEMALE = 2;  // per child
+// NOTE: The UI always uses the age-split path (CHILD_CREDIT_POINTS_BY_AGE below).
+// These flat values are only used when no childrenByAge is provided to the engine.
+export const CHILD_CREDIT_POINTS_MALE = 1;   // per child (6-17 rate)
+export const CHILD_CREDIT_POINTS_FEMALE = 1;  // per child (6-17 rate)
 
 // ─── National Insurance (NII) + Health Tax (employee, 2025, monthly) ─────
 // Source: https://www.btl.gov.il/Insurance/Rates/Pages/לעובדים%20שכירים.aspx
