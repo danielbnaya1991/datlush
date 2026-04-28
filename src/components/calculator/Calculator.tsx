@@ -34,41 +34,6 @@ function PerfEdge({ side = 'top' }: { side?: 'top' | 'bottom' }) {
   );
 }
 
-function VLine({
-  n,
-  label,
-  value,
-  valueRaw,
-  dim,
-}: {
-  n?: number;
-  label: string;
-  value?: number;
-  valueRaw?: string;
-  dim?: boolean;
-}) {
-  return (
-    <div
-      className="flex justify-between items-baseline py-[7px] text-sm font-mono"
-      style={{
-        color: dim ? '#666' : 'var(--foreground)',
-        borderBottom: '1px dotted #ccc',
-      }}
-    >
-      <span className="flex gap-2 items-baseline">
-        {n != null && (
-          <span className="text-xs min-w-[24px]" style={{ color: '#aaa' }}>
-            {String(n).padStart(2, '0')}
-          </span>
-        )}
-        <span>{label}</span>
-      </span>
-      <span dir="ltr" className="tabular-nums whitespace-nowrap font-medium">
-        {valueRaw ?? (value != null ? formatNIS(value) : '')}
-      </span>
-    </div>
-  );
-}
 
 export function Calculator() {
   const [calculated, setCalculated] = useState(false);
@@ -95,59 +60,78 @@ export function Calculator() {
   const [stage, setStage] = useState(0);
   const hasAnimated = useRef(false);
   const rafId = useRef(0);
+  const prevValue = useRef(0);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  // Animate number from prevValue → target whenever burden changes
   useEffect(() => {
     if (!calculated) {
       hasAnimated.current = false;
+      prevValue.current = 0;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset on uncalculate
       setDisplayValue(0);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStage(0);
       return;
     }
 
-    if (hasAnimated.current) {
-      setDisplayValue(burden.combinedMonthly);
-      return;
-    }
-
-    hasAnimated.current = true;
-    resultsRef.current?.focus();
-
     const target = burden.combinedMonthly;
+    const from = prevValue.current;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
       setDisplayValue(target);
-      setStage(4);
+      prevValue.current = target;
+      if (!hasAnimated.current) { hasAnimated.current = true; setStage(5); }
       return;
     }
 
-    setStage(1);
-    const duration = 1000;
-    const start = performance.now();
+    // First reveal: staged entrance
+    if (!hasAnimated.current) {
+      hasAnimated.current = true;
+      resultsRef.current?.focus();
+      setStage(1);
+      const t1 = setTimeout(() => setStage(2), 600);
+      const t2 = setTimeout(() => setStage(3), 900);
+      const t3 = setTimeout(() => setStage(4), 1200);
+      const t4 = setTimeout(() => setStage(5), 1500);
+      const duration = 1000;
+      const start = performance.now();
+      function firstAnimate(now: number) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        setDisplayValue(from + (target - from) * eased);
+        if (progress < 1) {
+          rafId.current = requestAnimationFrame(firstAnimate);
+        } else {
+          prevValue.current = target;
+        }
+      }
+      rafId.current = requestAnimationFrame(firstAnimate);
+      return () => {
+        cancelAnimationFrame(rafId.current);
+        clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+      };
+    }
 
+    // Subsequent changes: just animate the number
+    cancelAnimationFrame(rafId.current);
+    const duration = 400;
+    const start = performance.now();
     function animate(now: number) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setDisplayValue(target * eased);
+      setDisplayValue(from + (target - from) * eased);
       if (progress < 1) {
         rafId.current = requestAnimationFrame(animate);
+      } else {
+        prevValue.current = target;
       }
     }
-
     rafId.current = requestAnimationFrame(animate);
-
-    const t1 = setTimeout(() => setStage(2), 700);
-    const t2 = setTimeout(() => setStage(3), 1100);
-    const t3 = setTimeout(() => setStage(4), 1500);
-
-    return () => {
-      cancelAnimationFrame(rafId.current);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
+    return () => cancelAnimationFrame(rafId.current);
   }, [calculated, burden.combinedMonthly]);
 
   const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
@@ -191,30 +175,26 @@ export function Calculator() {
                 marginBottom: 16,
               }}
             >
-              <span>חשבונית · {yyyy}</span>
+              <span>תלוש שכר · {yyyy}</span>
               <span dir="ltr" className="font-bold" style={{ color: 'var(--foreground)' }}>
                 № 26-{invoiceNo}
               </span>
             </div>
 
-            {/* Brand name */}
-            <h1
-              style={{
-                fontWeight: 900,
-                fontSize: 'clamp(32px, 9vw, 48px)',
-                lineHeight: 1.1,
-                margin: 0,
-                letterSpacing: '0.01em',
-              }}
-            >
-              תְּלוּשׁ שָׂכֲרֵדִי
+            {/* Brand logo */}
+            <h1 style={{ margin: 0 }}>
+              <img
+                src="/logo.png"
+                alt="דתלוש"
+                style={{ height: 'clamp(36px, 9vw, 52px)', width: 'auto', margin: '0 auto', display: 'block' }}
+              />
             </h1>
 
             {/* Tagline */}
             <p
               style={{
                 fontSize: 16,
-                fontWeight: 500,
+                fontWeight: 700,
                 lineHeight: 1.4,
                 margin: '14px 8px 0',
                 color: '#333',
@@ -241,7 +221,7 @@ export function Calculator() {
             </div>
             <div
               style={{
-                color: 'var(--slip-accent)',
+                color: '#777',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 fontSize: 12,
@@ -323,52 +303,24 @@ export function Calculator() {
                 background: 'var(--foreground)',
                 color: '#fff',
                 border: 'none',
-                fontSize: 15,
+                fontSize: 18,
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
               }}
             >
-              הפק חשבונית ›
+              חישוב
             </button>
           )}
 
           {/* ═══ Results ═══ */}
           {calculated && (
             <div ref={resultsRef} tabIndex={-1} className="outline-none">
-              {/* Line items */}
-              <div style={{ marginTop: 20, paddingTop: 12, borderTop: '2px solid var(--foreground)' }}>
-                <div
-                  className="flex justify-between font-mono font-semibold"
-                  style={{
-                    fontSize: 12,
-                    color: '#777',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    paddingBottom: 8,
-                    borderBottom: '1px solid #999',
-                    marginBottom: 4,
-                  }}
-                >
-                  <span>פריט</span>
-                  <span>סכום ₪</span>
-                </div>
-                <VLine
-                  n={1}
-                  label="מס הכנסה (חודשי)"
-                  value={Math.max(0, (burden.tax.incomeTax - burden.tax.creditPoints) / 12)}
-                />
-                <VLine n={2} label="ביטוח לאומי" value={burden.tax.nii / 12} />
-                <VLine n={3} label="מס בריאות" value={burden.tax.healthTax / 12} />
-                <VLine n={4} label="חלקך · פערים פיסקליים" value={burden.fiscalMonthly} dim />
-                <VLine n={5} label="חלקך · עלות מילואים" value={burden.reserveDutyMonthly} dim />
-              </div>
-
-              {/* ═══ THE BIG NUMBER ═══ */}
+              {/* ═══ THE BIG NUMBER — first thing the user sees ═══ */}
               <div
                 className={`transition-all duration-700 ease-out ${fade(1)}`}
                 style={{
-                  marginTop: 22,
+                  marginTop: 20,
                   padding: '20px 14px 18px',
                   border: '3px solid var(--foreground)',
                   position: 'relative',
@@ -376,19 +328,7 @@ export function Calculator() {
                   background: 'var(--slip-paper)',
                 }}
               >
-                <div
-                  className="font-mono font-semibold"
-                  style={{
-                    fontSize: 13,
-                    letterSpacing: '0.22em',
-                    color: '#555',
-                    textTransform: 'uppercase',
-                    textAlign: 'center',
-                    marginBottom: 8,
-                  }}
-                >
-                  נטל חרדי · חודשי
-                </div>
+                {/* Big number */}
                 <div
                   dir="ltr"
                   style={{
@@ -404,21 +344,31 @@ export function Calculator() {
                   {formatNIS(displayValue)}
                 </div>
 
-                {/* Accent bar */}
+                {/* Context line */}
                 <div
+                  className={`font-mono text-center font-bold transition-all duration-500 ease-out ${fade(2)}`}
+                  style={{ fontSize: 13, color: '#555', lineHeight: 1.5, marginTop: 12 }}
+                >
+                  מהתלוש שלך הולכים לחרדים מדי חודש
+                </div>
+
+                {/* Accent bar — under the text */}
+                <div
+                  className={`transition-all duration-500 ease-out ${fade(3)}`}
                   style={{
                     width: 64,
                     height: 4,
-                    background: 'var(--slip-accent)',
-                    margin: '16px auto',
+                    background: '#999',
+                    margin: '12px auto 0',
                   }}
                 />
 
-                {/* Annual + Career columns */}
+                {/* Annual + Career — centered */}
                 <div
-                  className={`grid grid-cols-2 gap-3 transition-all duration-500 ease-out ${fade(2)}`}
+                  className={`grid grid-cols-2 gap-3 transition-all duration-500 ease-out ${fade(3)}`}
+                  style={{ marginTop: 14 }}
                 >
-                  <div style={{ borderInlineStart: '1px solid var(--foreground)', paddingInlineStart: 10 }}>
+                  <div className="text-center">
                     <div
                       className="font-semibold"
                       style={{ fontSize: 11, color: '#666', letterSpacing: '0.06em' }}
@@ -429,7 +379,7 @@ export function Calculator() {
                       {formatNIS(displayValue * 12)}
                     </div>
                   </div>
-                  <div>
+                  <div className="text-center">
                     <div
                       className="font-semibold"
                       style={{ fontSize: 11, color: '#666', letterSpacing: '0.06em' }}
@@ -444,43 +394,28 @@ export function Calculator() {
               </div>
 
               {/* ═══ Below results ═══ */}
-              {stage >= 3 && (
+              {stage >= 4 && (
                 <div className="animate-fade-in">
                   {/* Dashed divider + footnote */}
                   <div style={{ borderTop: '1px dashed var(--foreground)', margin: '18px 0 12px' }} />
                   <div className="font-mono" style={{ fontSize: 12, color: '#666', lineHeight: 1.6 }}>
-                    חשבונית זו אינה מסמך מס רשמי. מבוססת על נתוני אוצר, הלמ״ס, מכון הדמוקרטיה ופורום קהלת (2025–2026).
+                    הנתונים מבוססים על פרסומי אוצר, הלמ״ס, מכון הדמוקרטיה ופורום קהלת (2025–2026).
+                    המחשבון כולל רק מסים ישירים — בפועל הסכום גבוה יותר, כי את/ה משלם/ת גם מע״מ ומסים עקיפים.
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="flex gap-2" style={{ marginTop: 16 }}>
-                    <button
-                      type="button"
-                      onClick={() => setCalculated(false)}
-                      className="flex-1 cursor-pointer font-mono font-bold transition-colors hover:bg-slip-hover"
-                      style={{
-                        padding: '14px 10px',
-                        background: 'transparent',
-                        color: 'var(--foreground)',
-                        border: '2px solid var(--foreground)',
-                        fontSize: 13,
-                        letterSpacing: '0.14em',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      ‹ עריכה
-                    </button>
-                    <ShareButton monthlyBurden={burden.combinedMonthly} />
+                  {/* Share button */}
+                  <div style={{ marginTop: 16 }}>
+                    <ShareButton />
                   </div>
                 </div>
               )}
 
               {/* ═══ Accordion sections ═══ */}
-              {stage >= 4 && (
+              {stage >= 5 && (
                 <div className="animate-fade-in" style={{ marginTop: 16 }}>
                   <Accordion>
                     {[
-                      { value: 'formula', label: 'איך מחשבים?', content: <FormulaExplainer /> },
+                      { value: 'formula', label: 'איך זה מחושב?', content: <FormulaExplainer /> },
                       { value: 'sources', label: 'מקורות נתונים', content: <SourcesTable /> },
                       { value: 'faq', label: 'שאלות נפוצות', content: <FAQ /> },
                     ].map((item, i) => (
@@ -505,6 +440,24 @@ export function Calculator() {
 
         <PerfEdge side="bottom" />
       </div>
+
+      {/* ═══ Legal disclaimer ═══ */}
+      <p
+        dir="rtl"
+        style={{
+          fontSize: 10,
+          lineHeight: 1.5,
+          color: '#999',
+          marginTop: 16,
+          textAlign: 'center',
+          padding: '0 8px',
+        }}
+      >
+        המידע באתר זה מוצג למטרות אינפורמטיביות בלבד ואינו מהווה ייעוץ מקצועי, כלכלי, מיסויי או משפטי מכל סוג שהוא.
+        החישובים מבוססים על הערכות, נתונים ציבוריים ומודלים סטטיסטיים, ואינם מדויקים ברמת הפרט.
+        בעל האתר אינו נושא באחריות כלשהי לכל נזק, הפסד או הסתמכות על המידע המוצג.
+        השימוש באתר הוא על אחריות המשתמש/ת בלבד.
+      </p>
     </div>
   );
 }

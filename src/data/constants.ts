@@ -37,13 +37,14 @@ export const CREDIT_POINTS_FEMALE = 2.75;
 // NOTE: The UI always uses the age-split path (CHILD_CREDIT_POINTS_BY_AGE below).
 // These flat values are only used when no childrenByAge is provided to the engine.
 export const CHILD_CREDIT_POINTS_MALE = 1;   // per child (6-17 rate)
-export const CHILD_CREDIT_POINTS_FEMALE = 1;  // per child (6-17 rate)
+export const CHILD_CREDIT_POINTS_FEMALE = 2;  // per child (6-17 rate, includes working-mother credit)
 
-// ─── National Insurance (NII) + Health Tax (employee, 2025, monthly) ─────
+// ─── National Insurance (NII) + Health Tax (employee, 2026, monthly) ─────
 // Source: https://www.btl.gov.il/Insurance/Rates/Pages/לעובדים%20שכירים.aspx
-// UPDATED per Amendment 252 (תיקון 252), effective January 2025
-export const NII_REDUCED_THRESHOLD = 7_522; // ~60% of average wage (12,536)
-export const NII_CEILING = 50_695; // max insurable salary
+// Rates per Amendment 252 (תיקון 252), effective January 2025
+// Thresholds updated for 2026 (pegged to average wage)
+export const NII_REDUCED_THRESHOLD = 7_703; // ~60% of average wage
+export const NII_CEILING = 51_910; // max insurable salary
 
 export const NII_REDUCED_RATE = 0.0104; // 1.04% below threshold (was 0.4% pre-2025)
 export const NII_FULL_RATE = 0.07; // 7.0% above threshold (unchanged)
@@ -51,13 +52,15 @@ export const NII_FULL_RATE = 0.07; // 7.0% above threshold (unchanged)
 export const HEALTH_REDUCED_RATE = 0.0323; // 3.23% below threshold (was 3.1% pre-2025)
 export const HEALTH_FULL_RATE = 0.0517; // 5.17% above threshold (was 5.0% pre-2025)
 
-// ─── Age-split child credit points ──────────────────────────────────────
+// ─── Age-split child credit points (post-2024 reform) ───────────────────
 // Source: רשות המיסים — https://www.gov.il/he/pages/income-tax-credit-points
 // (§ 40 of the Income Tax Ordinance; "working mother" credit § 66)
+// 2024 reform equalized 0-5 credits for both parents.
+// Average for 0-5 bucket: (2.5 + 4.5 + 4.5 + 3.5 + 2.5 + 2.5) / 6 ≈ 3.33
 // Buckets 0-5 / 6-17 / 18+ chosen to keep UI lean.
 export const CHILD_CREDIT_POINTS_BY_AGE = {
-  male:   { age0to5: 2.0, age6to17: 1.0, age18plus: 0 },
-  female: { age0to5: 2.5, age6to17: 1.0, age18plus: 0 },
+  male:   { age0to5: 3.33, age6to17: 1.0, age18plus: 0 },
+  female: { age0to5: 3.33, age6to17: 2.0, age18plus: 0 },
 } as const;
 
 // ─── Single parent (הורה יחיד) credit — § 40(ב)(2) ──────────────────────
@@ -68,7 +71,7 @@ export const SINGLE_PARENT_PER_CHILD_POINTS = 1; // per child <18
 // Source: צו הרחבה לפנסיה חובה 2017 — https://www.gov.il/he/pages/pension_rights
 export const PENSION_EMPLOYEE_RATE_DEFAULT = 0.06;
 export const PENSION_EMPLOYEE_RATE_MAX = 0.07;
-export const PENSION_DEDUCTIBLE_CEILING_MONTHLY = NII_CEILING; // 50,695
+export const PENSION_DEDUCTIBLE_CEILING_MONTHLY = NII_CEILING; // 51,910
 
 // ─── Keren Hishtalmut — § 3(ה) פקודת מס הכנסה ──────────────────────────
 export const KEREN_EMPLOYEE_RATE = 0.025;

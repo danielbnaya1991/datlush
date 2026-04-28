@@ -13,7 +13,7 @@ const SOURCES = [
   },
   {
     parameter: 'נקודות זיכוי לילדים (לפי גיל)',
-    value: '0-5: 2.0/2.5 · 6-17: 1.0 · 18+: 0',
+    value: '0-5: 3.33 · 6-17: 1.0/2.0 · 18+: 0',
     source: 'רשות המיסים (§40 פקודת מס הכנסה)',
     url: 'https://www.gov.il/he/pages/income-tax-credit-points',
   },
@@ -102,43 +102,32 @@ const SOURCES = [
     url: 'https://en.idi.org.il/articles/63385',
   },
   {
-    parameter: 'מספר משפחות חרדיות',
+    parameter: 'מספר משפחות חרדיות (אומדן)',
     value: '~260,000',
-    source: 'מכון הדמוקרטיה / הלמ״ס',
+    source: 'מכון הדמוקרטיה / הלמ״ס (נגזר)',
     url: 'https://en.idi.org.il/haredi/2025/?chapter=63076',
   },
 ];
 
 export function SourcesTable() {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-sm">
-        <thead>
-          <tr>
-            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">נתון</th>
-            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">ערך</th>
-            <th className="slip-cell font-bold text-start !text-sm !py-1.5 !px-2">מקור</th>
-          </tr>
-        </thead>
-        <tbody>
-          {SOURCES.map((s) => (
-            <tr key={s.parameter}>
-              <td className="slip-cell !text-sm !py-1.5 !px-2">{s.parameter}</td>
-              <td className="slip-cell !text-sm !py-1.5 !px-2 tabular-nums whitespace-nowrap">{s.value}</td>
-              <td className="slip-cell !text-sm !py-1.5 !px-2">
-                <a
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-2 hover:text-foreground/70"
-                >
-                  {s.source}
-                </a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-0 divide-y divide-slip-border">
+      {SOURCES.map((s) => (
+        <div key={s.parameter} className="py-2.5">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="font-bold text-sm">{s.parameter}</span>
+            <span className="tabular-nums text-sm">{s.value}</span>
+          </div>
+          <a
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground/70 mt-0.5 inline-block break-all"
+          >
+            {s.source}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }

@@ -35,18 +35,10 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-import { formatNIS } from '@/lib/format';
-
-interface ShareButtonProps {
-  monthlyBurden?: number;
-}
-
-export function ShareButton({ monthlyBurden }: ShareButtonProps) {
+export function ShareButton() {
   const [open, setOpen] = useState(false);
   const shareUrl = SITE_URL;
-  const shareText = monthlyBurden
-    ? `גיליתי ש-${formatNIS(monthlyBurden)} מהתלוש שלי הולכים לחרדים מדי חודש. גלה כמה אצלך:`
-    : 'שמעת על "דתלוש"? עכשיו אפשר לגלות כמה מהתלוש שלך הולך לחרדים!';
+  const shareText = 'בדקת כבר כמה מהתלוש שלך הולך לחרדים?';
 
   const handleWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
@@ -71,27 +63,27 @@ export function ShareButton({ monthlyBurden }: ShareButtonProps) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex-1 cursor-pointer font-mono font-bold transition-colors"
+        className="w-full cursor-pointer font-mono font-bold transition-colors"
         style={{
-          padding: '14px 10px',
+          padding: '16px 10px',
           background: 'var(--foreground)',
           color: '#fff',
           border: 'none',
-          fontSize: 13,
+          fontSize: 15,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
         }}
       >
-        שתף
+        שיתוף המחשבון
       </button>
     );
   }
 
   return (
     <div
-      className="flex-1 flex items-center justify-center gap-4"
+      className="w-full flex items-center justify-center gap-4"
       style={{
-        padding: '10px',
+        padding: '14px',
         border: '2px solid var(--foreground)',
       }}
     >

@@ -41,7 +41,7 @@ export default async function OpengraphImage() {
               direction: 'rtl',
             }}
           >
-            תלוש שכרדי
+            דתלוש
           </div>
           <div
             style={{

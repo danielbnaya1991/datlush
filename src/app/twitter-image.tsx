@@ -41,7 +41,7 @@ export default async function TwitterImage() {
               direction: 'rtl',
             }}
           >
-            תלוש שכרדי
+            דתלוש
           </div>
           <div
             style={{
